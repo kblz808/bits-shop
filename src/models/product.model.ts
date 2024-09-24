@@ -1,7 +1,6 @@
 import { Schema, Model, Document, model } from 'mongoose';
 
 interface IProduct extends Document{
-  _id: string;
   userId: Schema.Types.ObjectId;
   name: string;
   description: string;
@@ -17,7 +16,6 @@ interface IProduct extends Document{
 }
 
 export interface IBid extends Document {
-  _id: string;
   bidderId: Schema.Types.ObjectId;
   amount: number;
   message: string;

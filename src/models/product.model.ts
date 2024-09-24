@@ -1,8 +1,8 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
-interface IProduct {
+interface IProduct extends Document{
   _id: string;
-  userId: string;
+  userId: Schema.Types.ObjectId;
   name: string;
   description: string;
   images: string[];
@@ -16,10 +16,12 @@ interface IProduct {
   bids: IBid[],
 }
 
-export interface IBid {
+export interface IBid extends Document {
   _id: string;
-  userId: string;
+  bidderId: Schema.Types.ObjectId;
   amount: number;
+  message: string;
+  status: string;
   createdAt: Date;
 }
 
@@ -38,4 +40,13 @@ export const productSchema: Schema<IProduct> = new Schema({
     isApproved: { type: Boolean, default: false },
 });
 
-export const ProductModel = mongoose.model('Product', productSchema);
+export const bidSchema: Schema<IBid> = new Schema({
+  bidderId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  amount: { type: Number, required: true },
+  message: {type: String},
+  createdAt: { type: Date, default: Date.now },
+  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' }
+});
+
+export const ProductModel: Model<IProduct> = mongoose.model('Product', productSchema);
+export const BidModel: Model<IBid> = mongoose.model('Bid', bidSchema);

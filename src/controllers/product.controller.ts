@@ -1,5 +1,6 @@
 import { Context } from 'hono';
 import { ProductModel, IProduct} from '../models/product.model';
+// import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {
   try {
@@ -48,5 +49,55 @@ export const deleteProduct = async (c: Context)  => {
     
   } catch(error) {
       return c.json({ error: 'An unknown error occurred' }, 500);
+  }
+}
+
+export const getAllProducts = async (c: Context) => {
+  try {
+    const products = await ProductModel.find();
+
+    return c.json(products, 200);
+
+    // for streaaming data (future)
+    // const cursor = Product.find().select('name price description').lean().cursor();
+
+    // const readable = new Readable({
+    //   objectMode: true,
+    //   read() {}
+    // });
+
+    // cursor.on('data', (doc) => {
+    //   readable.push(JSON.stringify(doc));
+    // });
+
+    // cursor.on('end', () => {
+    //   readable.push(null);
+    // });
+    // c.header('Content-Type', 'application/json');
+    // c.header('Transfer-Encoding', 'chunked');
+
+    // readable.pipe(c.res);
+  } catch(error){
+    if (error instanceof Error) {
+      return c.json({ error: error.message }, 500);
+    }
+    return c.json({ error: 'An unknown error occurred' }, 500);
+  }
+}
+
+export const getProduct = async (c: Context) => {
+  try {
+    const productId = c.req.param('id')
+
+    const product = await ProductModel.findById(productId)
+
+    if(!product) {
+      return c.json({error: 'Product not found'}, 404)
+    }
+
+    return c.json(product, 200)
+
+  } catch(error) {
+    return c.json({error: 'An unknown error occured'}, 500)
   }
 }

@@ -1,6 +1,6 @@
 import { Schema, Model, Document, model } from 'mongoose';
 
-interface IProduct extends Document{
+export interface IProduct extends Document{
   userId: Schema.Types.ObjectId;
   name: string;
   description: string;

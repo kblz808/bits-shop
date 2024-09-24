@@ -4,9 +4,9 @@ import userRoute from './routes/user.route';
 
 
 import mongoose from 'mongoose';
-import {config} from 'dotenv';
+import * as dotenv from 'dotenv';
 
-config();
+dotenv.config();
 
 const connectDB = async () => {
   try {
@@ -17,7 +17,6 @@ const connectDB = async () => {
     process.exit(0)
   }
 }
-
 
 const app = new Hono()
 

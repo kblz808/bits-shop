@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import { ProductModel } from '../models/product.model';
+import { ProductModel, IProduct} from '../models/product.model';
 
 export const createProduct = async (c: Context) => {
   try {
@@ -13,3 +13,40 @@ export const createProduct = async (c: Context) => {
     return c.json({error: 'Failed to create product'}, 500);
   }
 };
+
+export const updateProduct = async (c: Context) => {
+  try {
+    const id = c.req.param('id');
+
+    const updatedData = await c.req.json() as IProduct;
+    const updatedProduct = await ProductModel.findByIdAndUpdate(id, updatedData, {new: true});
+
+    if (!updatedProduct) {
+      return c.json({error: 'Product not found'}, 404);
+    }
+
+    return c.json(updatedProduct, 200);
+  } catch(error) {
+    if (error instanceof Error) {
+      return c.json({error: error.message}, 500)
+    }
+    return c.json({error: 'Unknown error occurred'}, 500)
+  }
+}
+
+export const deleteProduct = async (c: Context)  => {
+  try {
+    const id = c.req.param('id');
+
+    const deletedProduct = await ProductModel.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return c.json({error: 'Product not found'}, 404);
+    }
+
+    return c.json({message: 'Product deleted successfully'}, 200);
+    
+  } catch(error) {
+      return c.json({ error: 'An unknown error occurred' }, 500);
+  }
+}

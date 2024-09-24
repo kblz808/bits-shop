@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { createProduct } from '../controllers/product.controller';
 
-const api = new Hono();
+const productRoute = new Hono();
 
-api.post('/products', createProduct);
+productRoute.post('/products', createProduct);
 
-export default api;
+export default productRoute;

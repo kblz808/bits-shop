@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
 import { createUser, loginUser} from '../controllers/user.controller'; 
 
-const api = new Hono();
+const userRoute = new Hono();
 
-api.post('/user/register', createUser);
-api.post('/user/login', loginUser);
+userRoute.post('/user/register', createUser);
+userRoute.post('/user/login', loginUser);
 
-export default api;
+export default userRoute;

@@ -1,11 +1,23 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Model, Document, model} from 'mongoose';
 
-interface ProfileImg {
-  public_id: string;
-  secure_url: string;
+interface IUser  extends Document {
+  _id: Schema.Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  username: string;
+  phoneNumber: string;
+  schoolId: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  account_balance: number;
+  isBlocked: boolean;
+  purchasedProducts: [Schema.Types.ObjectId];
+  profileImg: string;
+  wishlist: [Schema.Types.ObjectId]; 
 }
 
-const userSchema = new Schema(
+export const userSchema: Schema<IUser> = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -27,7 +39,7 @@ const userSchema = new Schema(
     account_balance: { type: Number, default: 0 },
     isBlocked: { type: Boolean, default: false },
     purchasedProducts: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-    profileImg: {type: ProfileImg },
+    profileImg: {type: String},
     wishlist: [
       {
         type: Schema.Types.ObjectId,
@@ -41,4 +53,4 @@ const userSchema = new Schema(
   }
 );
 
-export default model('user', userSchema);
+export const UserModel: Model<IUser> = model('User', userSchema);

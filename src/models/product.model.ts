@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model, Document } from 'mongoose';
+import { Schema, Model, Document, model } from 'mongoose';
 
 interface IProduct extends Document{
   _id: string;
@@ -48,5 +48,5 @@ export const bidSchema: Schema<IBid> = new Schema({
   status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' }
 });
 
-export const ProductModel: Model<IProduct> = mongoose.model('Product', productSchema);
-export const BidModel: Model<IBid> = mongoose.model('Bid', bidSchema);
+export const ProductModel: Model<IProduct> = model('Product', productSchema);
+export const BidModel: Model<IBid> = model('Bid', bidSchema);

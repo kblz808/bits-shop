@@ -1,6 +1,7 @@
 import { Schema, Model, Document, model } from 'mongoose';
 
 export interface IProduct extends Document{
+  productId: Schema.Types.ObjectId;
   userId: Schema.Types.ObjectId;
   name: string;
   description: string;
@@ -12,10 +13,11 @@ export interface IProduct extends Document{
   categories: string[];
   createdAt: Date;
   updatedAt: Date;
-  bids: IBid[],
+  bids: Schema.Types.ObjectId[],
 }
 
 export interface IBid extends Document {
+  productId: Schema.Types.ObjectId;
   bidderId: Schema.Types.ObjectId;
   amount: number;
   message: string;
@@ -39,6 +41,7 @@ export const productSchema: Schema<IProduct> = new Schema({
 });
 
 export const bidSchema: Schema<IBid> = new Schema({
+  productId: {type: Schema.Types.ObjectId, ref: 'Product', required: true},
   bidderId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   amount: { type: Number, required: true },
   message: {type: String},

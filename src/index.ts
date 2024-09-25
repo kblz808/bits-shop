@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import productRoute from './routes/product.route'
 import userRoute from './routes/user.route'; 
+import bidRoute from './routes/bid.route'; 
 
 
 import mongoose from 'mongoose';
@@ -29,6 +30,7 @@ app.get('/', (c) => {
 
 app.route('/api', userRoute)
 app.route('/api', productRoute)
+app.route('/api', bidRoute)
 
 connectDB();
 

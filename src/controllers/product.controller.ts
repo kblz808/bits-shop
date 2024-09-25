@@ -1,11 +1,10 @@
 import { Context } from 'hono';
-import { ProductModel, IProduct} from '../models/product.model';
+import { ProductModel, IProduct, BidModel } from '../models/product.model';
 // import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {
   try {
     const productData = await c.req.json();
-    console.log(productData);
     const product = new ProductModel(productData);
     await product.save();
     return c.json(product, 201);
@@ -99,5 +98,22 @@ export const getProduct = async (c: Context) => {
 
   } catch(error) {
     return c.json({error: 'An unknown error occured'}, 500)
+  }
+}
+
+export const getBidRequests = async (c: Context) => {
+  try {
+    const productId = c.req.param('productId');
+
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return c.json({error: 'Product not found'}, 404);
+    }
+
+    const bids = await BidModel.find({productId});
+
+    return c.json(bids);
+  } catch (error) {
+    return c.json({error: 'An unknown erro  occurred'}, 500);
   }
 }

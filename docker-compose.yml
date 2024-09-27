@@ -8,8 +8,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://admin:pa$$word@mongo:27017/
-      - MONGO_DB=shop
+      - MONGO_URI=mongodb://admin:pa$$word@mongo:27017/shop
       - JWT_SECRET=bitsshop
 
   mongo:
@@ -17,6 +16,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=pa$$word
+      - MONGO_INITDB_DATABASE=shop
     volumes:
       - mongo-data:/data/db
 

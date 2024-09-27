@@ -1,5 +1,7 @@
 import { Context } from 'hono';
 import { ProductModel, IProduct, BidModel } from '../models/product.model';
+import { UserModel } from '../models/user.model';
+import mongoose from 'mongoose';
 // import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {
@@ -16,7 +18,7 @@ export const createProduct = async (c: Context) => {
 
 export const updateProduct = async (c: Context) => {
   try {
-    const id = c.req.param('id');
+    const id = c.req.param('productId');
 
     const updatedData = await c.req.json() as IProduct;
     const updatedProduct = await ProductModel.findByIdAndUpdate(id, updatedData, {new: true});
@@ -36,7 +38,7 @@ export const updateProduct = async (c: Context) => {
 
 export const deleteProduct = async (c: Context)  => {
   try {
-    const id = c.req.param('id');
+    const id = c.req.param('productId');
 
     const deletedProduct = await ProductModel.findByIdAndDelete(id);
 
@@ -86,7 +88,7 @@ export const getAllProducts = async (c: Context) => {
 
 export const getProduct = async (c: Context) => {
   try {
-    const productId = c.req.param('id')
+    const productId = c.req.param('productId')
 
     const product = await ProductModel.findById(productId)
 
@@ -115,5 +117,35 @@ export const getBidRequests = async (c: Context) => {
     return c.json(bids);
   } catch (error) {
     return c.json({error: 'An unknown erro  occurred'}, 500);
+  }
+}
+
+export const addToWishlist = async (c: Context) => {
+  try {
+    const userId = c.get('userId');
+    let id = c.req.param('productId');
+    const productId = new mongoose.Schema.Types.ObjectId(id);
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return c.json({error: 'User not found'});
+    }
+
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return c.json({error: 'Product not found'})
+    }
+
+    if (user?.wishlist.includes(productId)) {
+      return c.json({message: 'Product already in wishlist'})
+    }
+
+    user?.wishlist.push(productId);
+    await user?.save();
+
+    return c.json({message: 'Added product to wishlist'}, 201)
+
+  } catch (error) {
+    return c.json({error: 'An unknown error occurred'}, 500);
   }
 }

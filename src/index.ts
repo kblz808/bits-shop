@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors';
+
 import productRoute from './routes/product.route'
 import userRoute from './routes/user.route'; 
 import bidRoute from './routes/bid.route'; 
-
 
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
@@ -20,6 +21,14 @@ const connectDB = async () => {
 }
 
 const app = new Hono()
+
+app.use(cors({
+ origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 600,
+  credentials: true,
+}));
 
 app.get('/', (c) => {
   return c.json({

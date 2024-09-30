@@ -1,6 +1,5 @@
-FROM bun:latest
+FROM oven/bun:latest
 
-# Set the working directory to /app
 WORKDIR /app
 
 COPY package.json .

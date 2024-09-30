@@ -5,6 +5,8 @@ import productRoute from './routes/product.route'
 import userRoute from './routes/user.route'; 
 import bidRoute from './routes/bid.route'; 
 
+import paymentRoute from './routes/payment.route';
+
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 
@@ -40,6 +42,7 @@ app.get('/', (c) => {
 app.route('/api', userRoute)
 app.route('/api', productRoute)
 app.route('/api', bidRoute)
+app.route('/api', paymentRoute)
 
 connectDB();
 

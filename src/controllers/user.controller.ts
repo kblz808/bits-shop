@@ -8,7 +8,7 @@ export const createUser = async (c: Context) => {
   try {
     const userData: IUser = await c.req.json() as IUser;
 
-    const {username, email, password} = userData;
+    let {username, email, password} = userData;
 
     const existingUser = await UserModel.findOne({ $or: [{username}, {email}]});
     if (existingUser) {
@@ -26,7 +26,17 @@ export const createUser = async (c: Context) => {
 
     const token = generateToken(user._id!.toString());
 
-    return c.json({user, token}, 201);
+    const userjson = {
+      id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username,
+      phone_number: user.phone_number,
+      school_id: user.school_id,
+      email: user.email,
+    }
+
+    return c.json({userjson, token}, 201);
     
   } catch (error) {
     console.log(error)
@@ -51,7 +61,17 @@ export const loginUser = async (c: Context) => {
 
     const token = generateToken(user._id!.toString());
 
-    return c.json({user, token})
+    const userjson = {
+      id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username,
+      phone_number: user.phone_number,
+      school_id: user.school_id,
+      email: user.email,
+    }
+
+    return c.json({userjson, token}, 201);
   } catch (error) {
     console.log(error)
     return c.json({error: 'Failed to login'}, 500)
@@ -60,8 +80,8 @@ export const loginUser = async (c: Context) => {
 
 export const addToWishlist = async (c: Context) => {
   try {
-    const userId = c.get('userId');
-    let p_id = c.get('productId');
+    const userId = c.req.param('userId');
+    let p_id = c.req.param('productId');
     const productId = new mongoose.Schema.Types.ObjectId(p_id);
 
     const user = await UserModel.findById(userId);

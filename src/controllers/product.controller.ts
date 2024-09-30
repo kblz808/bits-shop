@@ -1,7 +1,5 @@
 import { Context } from 'hono';
 import { ProductModel, IProduct, BidModel } from '../models/product.model';
-import { UserModel } from '../models/user.model';
-import mongoose from 'mongoose';
 // import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {

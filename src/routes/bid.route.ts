@@ -5,11 +5,11 @@ import { tokenMiddleware } from '../middlewares/auth.middleware';
 
 const bidRoute =  new Hono();
 
-bidRoute.use('/bid/*', bearerAuth({verifyToken: tokenMiddleware}))
+bidRoute.use('/bids/*', bearerAuth({verifyToken: tokenMiddleware}))
 
-bidRoute.post('/bid/bid-request', createBid);
-bidRoute.get('/bid/get-bid/:bidId', getBid);
-bidRoute.put('/bid/reject-bid/:bidId', rejectBid);
-bidRoute.put('/bid/accept-bid/:bidId', acceptBid);
+bidRoute.post('/bids', createBid);
+bidRoute.get('/bids/:bidId', getBid);
+bidRoute.put('/bids/:bidId/reject', rejectBid);
+bidRoute.put('/bids/:bidId/accept', acceptBid);
 
 export default bidRoute;

@@ -1,6 +1,8 @@
 import { Context } from 'hono';
 import { UserModel, IUser  } from '../models/user.model';
 import { generateToken, generateHash, compareHash} from '../utils/jwt.utils';
+import mongoose from 'mongoose';
+import { ProductModel } from '../models/product.model';
 
 export const createUser = async (c: Context) => {
   try {
@@ -53,5 +55,65 @@ export const loginUser = async (c: Context) => {
   } catch (error) {
     console.log(error)
     return c.json({error: 'Failed to login'}, 500)
+  }
+}
+
+export const addToWishlist = async (c: Context) => {
+  try {
+    const userId = c.get('userId');
+    let p_id = c.get('productId');
+    const productId = new mongoose.Schema.Types.ObjectId(p_id);
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return c.json({error: 'User not found'});
+    }
+
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return c.json({error: 'Product not found'})
+    }
+
+    if (user.wishlist.includes(productId)) {
+      return c.json({message: 'Product already in wishlist'})
+    }
+
+    user.wishlist.push(productId);
+    await user?.save();
+
+    return c.json({message: 'Added product to wishlist'}, 201)
+
+  } catch (error) {
+    return c.json({error: 'An unknown error occurred'}, 500);
+  }
+}
+
+export const removeFromWishlist = async (c: Context) => {
+  try {
+    const userId = c.get('userId');
+    let p_id = c.get('productId');
+    const productId = new mongoose.Schema.Types.ObjectId(p_id);
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return c.json({error: 'User not found'});
+    }
+
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return c.json({error: 'Product not found'})
+    }
+
+    if (!user.wishlist.includes(productId)) {
+      return c.json({message: 'Product no in wishlist'})
+    }
+
+    user.wishlist = user.wishlist.filter((id: mongoose.Schema.Types.ObjectId) => id != productId);
+    await user?.save();
+
+    return c.json({message: 'Added product to wishlist'}, 201)
+
+  } catch (error) {
+    return c.json({error: 'An unknown error occurred'}, 500);
   }
 }

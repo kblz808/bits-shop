@@ -13,7 +13,7 @@ export interface IUser extends Document {
   is_blocked: boolean;
   purchased_products: [Schema.Types.ObjectId];
   profile_img: string;
-  wishlist: [Schema.Types.ObjectId]; 
+  wishlist: Schema.Types.ObjectId[]; 
 }
 
 export const userSchema: Schema<IUser> = new Schema(

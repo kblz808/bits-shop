@@ -120,32 +120,3 @@ export const getBidRequests = async (c: Context) => {
   }
 }
 
-export const addToWishlist = async (c: Context) => {
-  try {
-    const userId = c.get('userId');
-    let id = c.req.param('productId');
-    const productId = new mongoose.Schema.Types.ObjectId(id);
-
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return c.json({error: 'User not found'});
-    }
-
-    const product = await ProductModel.findById(productId);
-    if (!product) {
-      return c.json({error: 'Product not found'})
-    }
-
-    if (user?.wishlist.includes(productId)) {
-      return c.json({message: 'Product already in wishlist'})
-    }
-
-    user?.wishlist.push(productId);
-    await user?.save();
-
-    return c.json({message: 'Added product to wishlist'}, 201)
-
-  } catch (error) {
-    return c.json({error: 'An unknown error occurred'}, 500);
-  }
-}

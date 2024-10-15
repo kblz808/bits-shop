@@ -4,7 +4,6 @@ import { bearerAuth } from 'hono/bearer-auth'
 import { tokenMiddleware } from '../middlewares/auth.middleware';
 
 const userRoute = new Hono();
-
 userRoute.post('/users/register', createUser);
 userRoute.post('/users/login', loginUser);
 userRoute.use('/admin/*', bearerAuth({verifyToken: tokenMiddleware}))

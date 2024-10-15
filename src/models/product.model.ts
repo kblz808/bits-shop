@@ -10,7 +10,11 @@ export interface IProduct extends Document{
   stock: number;
   isApproved: boolean;
   status: string;
-  categories: string[];
+  category: {
+    name: string,
+    subCategories: string[],
+  };
+  tag: string;
   createdAt: Date;
   updatedAt: Date;
   bids: Schema.Types.ObjectId[],
@@ -32,7 +36,15 @@ export const productSchema: Schema<IProduct> = new Schema({
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
     images: [{ type: String, required: true }],
-    categories: [{ type: String, required: true }],
+    category: [{
+      name: {
+        type: String,
+        required: true,
+      },
+      // description: {type: String, required: true},
+      subCategories: [{type: String, required: true}],
+    }],
+    tag: {type: String, required: false},
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     bids: [{ type: Schema.Types.ObjectId, ref: 'Bid' }],

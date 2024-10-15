@@ -165,10 +165,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -196,7 +193,7 @@
         },
         "security": [
           {
-            "api_key": []
+            "BearerAuth": []
           }
         ]
       }
@@ -240,13 +237,7 @@
         },
         "security": [
           {
-            "api_key": []
-          },
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -292,10 +283,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
+            "BearerAuth": []
           }
         ]
       },
@@ -380,13 +368,7 @@
         },
         "security": [
           {
-            "api_key": []
-          },
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
+            "BearerAuth": []
           }
         ]
       }
@@ -422,7 +404,12 @@
           "default": {
             "description": "successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/bids/{bidId}": {
@@ -461,7 +448,12 @@
           "404": {
             "description": "Bid not found"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/bids/{bidId}/accept": {
@@ -487,7 +479,12 @@
           "default": {
             "description": "successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/bids/{bidId}/reject": {
@@ -513,7 +510,12 @@
           "default": {
             "description": "successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/payment/payment": {
@@ -537,7 +539,12 @@
           "default": {
             "description": "successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/payment/verify/{tx_ref}": {
@@ -563,7 +570,12 @@
           "default": {
             "description": "successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     }
   },
@@ -875,10 +887,7 @@
             "type": "string"
           },
           "callback_url": {
-            "type": "string",
-            "examples": [
-              "https://chapa.co"
-            ]
+            "type": "string"
           },
           "customization": {
             "type": "object",
@@ -910,23 +919,14 @@
       }
     },
     "securitySchemes": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
+  },
+  "security": {
+    "BearerAuth": []
   }
 }

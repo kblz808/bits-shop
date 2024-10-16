@@ -12,7 +12,7 @@ export const createUser = async (c: Context) => {
   try {
     const userData: IUser = await c.req.json() as IUser;
 
-    let { username, email, password } = userData;
+    const { username, email, password } = userData;
 
     const existingUser = await UserModel.findOne({
       $or: [{ username }, { email }],

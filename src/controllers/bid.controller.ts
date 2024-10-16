@@ -1,6 +1,6 @@
-import { Context } from 'hono';
-import {  IBid, BidModel, ProductModel } from '../models/product.model';
-import { ObjectId } from 'mongoose';
+import { Context } from "hono";
+import { BidModel, IBid, ProductModel } from "../models/product.model.ts";
+import { ObjectId } from "npm:mongoose";
 
 export const createBid = async (c: Context) => {
   try {
@@ -8,7 +8,7 @@ export const createBid = async (c: Context) => {
 
     const product = await ProductModel.findById(productId);
     if (!product) {
-      return c.json({error: 'Product not found'}, 404);
+      return c.json({ error: "Product not found" }, 404);
     }
 
     const bid = new BidModel({
@@ -16,8 +16,8 @@ export const createBid = async (c: Context) => {
       bidderId,
       amount,
       message,
-      status: 'pending',
-    })
+      status: "pending",
+    });
 
     await bid.save();
 
@@ -25,59 +25,59 @@ export const createBid = async (c: Context) => {
 
     await product.save();
 
-    return c.json({message: 'Bid created successfully'}, 200);
+    return c.json({ message: "Bid created successfully" }, 200);
   } catch (error) {
-    return c.json({error: 'An unknown error occurred'})
+    return c.json({ error: "An unknown error occurred" });
   }
-}
+};
 
 export const acceptBid = async (c: Context) => {
   try {
-    const bidId = c.req.param('bidId');
+    const bidId = c.req.param("bidId");
 
     const bid = await BidModel.findById(bidId);
     if (!bid) {
-      return c.json({error: 'Bid not found'},  404);
+      return c.json({ error: "Bid not found" }, 404);
     }
 
-    bid.status = 'accepted';
+    bid.status = "accepted";
     await bid.save();
 
-    return c.json({message: 'Bid accepted successfully'}, 200);
+    return c.json({ message: "Bid accepted successfully" }, 200);
   } catch (error) {
-    return c.json({error: 'An unknown error occured'}, 500);
+    return c.json({ error: "An unknown error occured" }, 500);
   }
-}
+};
 
 export const rejectBid = async (c: Context) => {
   try {
-    const bidId = c.req.param('bidId');
+    const bidId = c.req.param("bidId");
 
     const bid = await BidModel.findById(bidId);
     if (!bid) {
-      return c.json({error: 'Bid not found'},  404);
+      return c.json({ error: "Bid not found" }, 404);
     }
 
-    bid.status = 'rejected';
+    bid.status = "rejected";
     await bid.save();
 
-    return c.json({message: 'Bid rejected successfully'}, 200);
+    return c.json({ message: "Bid rejected successfully" }, 200);
   } catch (error) {
-    return c.json({error: 'An unknown error occured'}, 500);
+    return c.json({ error: "An unknown error occured" }, 500);
   }
-}
+};
 
 export const getBid = async (c: Context) => {
   try {
-    const bidId = c.req.param('bidId');
+    const bidId = c.req.param("bidId");
 
     const bid = await BidModel.findById(bidId);
     if (!bid) {
-      return c.json({error: 'Bid not found'}, 404);
+      return c.json({ error: "Bid not found" }, 404);
     }
 
     return c.json(bid);
   } catch (error) {
-    return c.json({error: 'An unknown error occurred'});
+    return c.json({ error: "An unknown error occurred" });
   }
-}
+};

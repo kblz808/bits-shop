@@ -1,0 +1,932 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Bits Store - OpenAPI 3.1",
+    "description": "hello there",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "version": "0.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Everything about your Users"
+    },
+    {
+      "name": "product",
+      "description": "Access to Products"
+    },
+    {
+      "name": "bid",
+      "description": "Operations about Bids"
+    },
+    {
+      "name": "payment",
+      "description": "Payment Operations"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Register a new user",
+        "description": "Register a new user",
+        "operationId": "registerUser",
+        "requestBody": {
+          "description": "Register a new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Login user",
+        "description": "Login a user and receive a jwt token",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "Login a user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Create a new product",
+        "description": "Create a new product",
+        "operationId": "createProduct",
+        "requestBody": {
+          "description": "Create a new product",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid product data"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Returns all products",
+        "description": "Returns a list of all products",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Find product by ID",
+        "description": "Returns a single product",
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of product to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Updates a product",
+        "description": "",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of product that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of product that needs to be updated",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "Price of product that needs to be updated",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Deletes a product",
+        "description": "delete a product",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Product id to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid product value"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/{productId}/bids": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Find product by ID",
+        "description": "Returns a single product",
+        "operationId": "getProductBids",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of product to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/bids": {
+      "post": {
+        "tags": [
+          "bid"
+        ],
+        "summary": "Creates new bid",
+        "description": "Creates a new bid on a given product",
+        "operationId": "createBid",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BidRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bid"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/bids/{bidId}": {
+      "get": {
+        "tags": [
+          "bid"
+        ],
+        "summary": "Get a specific bid",
+        "description": "",
+        "operationId": "getBid",
+        "parameters": [
+          {
+            "name": "bidId",
+            "in": "path",
+            "description": "The bid id used to retrieve a specific bid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "Bid not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/bids/{bidId}/accept": {
+      "put": {
+        "tags": [
+          "bid"
+        ],
+        "summary": "Accept bid",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "acceptBid",
+        "parameters": [
+          {
+            "name": "bidId",
+            "in": "path",
+            "description": "bid id that will be accepted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/bids/{bidId}/reject": {
+      "put": {
+        "tags": [
+          "bid"
+        ],
+        "summary": "Accept bid",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "rejectBid",
+        "parameters": [
+          {
+            "name": "bidId",
+            "in": "path",
+            "description": "bid id that will be accepted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payment/payment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Accept payment",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "acceptPayment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payment/verify/{tx_ref}": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "verify payment",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "verifyPayment",
+        "parameters": [
+          {
+            "name": "tx_ref",
+            "in": "path",
+            "description": "transaction reference to be verified",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "66f3b68f6021f488235d35ce"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "alex"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "lion"
+          },
+          "username": {
+            "type": "string",
+            "example": "alex@123"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": 912345678
+          },
+          "school_id": {
+            "type": "string",
+            "example": "ugrwse102113"
+          },
+          "email": {
+            "type": "string",
+            "example": "alex@gmail.com"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "example": false
+          },
+          "account_balance": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10000
+          },
+          "is_blocked": {
+            "type": "boolean",
+            "example": false
+          },
+          "purchased_products": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_img": {
+            "type": "string"
+          },
+          "wishlist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "66f3b6f66021f488235d35d1"
+          },
+          "userId": {
+            "type": "string",
+            "example": "66f3b68f6021f488235d35ce"
+          },
+          "description": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "is_approved": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "pending",
+              "sold"
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Bid": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "66f3b6f66021f488235d35d2"
+          },
+          "productId": {
+            "type": "string",
+            "example": "66f3b6f66021f488235d35d1"
+          },
+          "bidderId": {
+            "type": "string",
+            "example": "66f3b68f6021f488235d35ce"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2000
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "BidRequest": {
+        "required": [
+          "productId",
+          "bidderId",
+          "amount"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "examples": [
+              "66f3b6f66021f488235d35d1"
+            ]
+          },
+          "bidderId": {
+            "type": "string",
+            "examples": [
+              "66f3b68f6021f488235d35ce"
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64",
+            "example": 30000
+          },
+          "message": {
+            "type": "string",
+            "example": "I would like to buy this product"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "required": [
+          "first_name",
+          "last_name",
+          "username",
+          "phone_number",
+          "school_id",
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "examples": [
+              "alex"
+            ]
+          },
+          "last_name": {
+            "type": "string",
+            "examples": [
+              "zuba"
+            ]
+          },
+          "username": {
+            "type": "string",
+            "examples": [
+              "alex@123"
+            ]
+          },
+          "phone_number": {
+            "type": "string",
+            "examples": [
+              912345678
+            ]
+          },
+          "school_id": {
+            "type": "string",
+            "examples": [
+              "ugr-swe-432432"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "examples": [
+              "alex@gmail.com"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "examples": [
+              "pa$$word"
+            ]
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "examples": [
+              "alex@123"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "examples": [
+              "pa$$word"
+            ]
+          }
+        }
+      },
+      "NewProductRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "examples": [
+              "66f3b68f6021f488235d35ce"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "examples": [
+              "keyboard"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "examples": [
+              200
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "examples": [
+              "ETB"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "callback_url": {
+            "type": "string"
+          },
+          "customization": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": {
+    "BearerAuth": []
+  }
+}

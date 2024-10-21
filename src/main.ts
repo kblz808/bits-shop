@@ -18,6 +18,6 @@ app.use(cors({
 
 InitRoutes(app);
 
-// ConnectDB();
+ConnectDB();
 
 Deno.serve({ port: 3000 }, app.fetch);

@@ -1,4 +1,4 @@
-import { Schema, Model, Document, model} from 'mongoose';
+import { Document, Model, model, Schema } from "npm:mongoose";
 
 export interface IUser extends Document {
   first_name: string;
@@ -13,7 +13,7 @@ export interface IUser extends Document {
   is_blocked: boolean;
   purchased_products: [Schema.Types.ObjectId];
   profile_img: string;
-  wishlist: Schema.Types.ObjectId[]; 
+  wishlist: Schema.Types.ObjectId[];
 }
 
 export const userSchema: Schema<IUser> = new Schema(
@@ -28,27 +28,27 @@ export const userSchema: Schema<IUser> = new Schema(
       required: true,
       lowercase: true,
       unique: true,
-      trim: true
+      trim: true,
     },
     password: { type: String, required: true },
     is_admin: {
       type: Boolean,
-      default: false
+      default: false,
     },
     account_balance: { type: Number, default: 0 },
     is_blocked: { type: Boolean, default: false },
     purchased_products: {
-      type: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+      type: [{ type: Schema.Types.ObjectId, ref: "Product" }],
       default: [],
     },
-    profile_img: {type: String},
+    profile_img: { type: String },
     wishlist: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Product'
-      }
-    ]
+        ref: "Product",
+      },
+    ],
   },
 );
 
-export const UserModel: Model<IUser> = model('User', userSchema);
+export const UserModel: Model<IUser> = model("User", userSchema);

@@ -1,13 +1,11 @@
-FROM oven/bun:latest
+FROM denoland/deno:alpine
 
 WORKDIR /app
 
-COPY package.json .
-
-RUN bun install
-
 COPY . .
+
+RUN deno install
 
 EXPOSE 3000
 
-CMD ["bun", "run", "dev"]
+CMD ["deno", "task", "start"]

@@ -1,7 +1,6 @@
 import { Document, Model, model, Schema } from "npm:mongoose";
 
 export interface IProduct extends Document {
-  productId: Schema.Types.ObjectId;
   userId: Schema.Types.ObjectId;
   name: string;
   description: string;
@@ -20,6 +19,17 @@ export interface IProduct extends Document {
   bids: Schema.Types.ObjectId[];
 }
 
+export interface IExchangeItem extends Document {
+  userId: Schema.Types.ObjectId;
+  productId: Schema.Types.ObjectId;
+  name: string;
+  description: string;
+  images: string[];
+  amount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IBid extends Document {
   productId: Schema.Types.ObjectId;
   bidderId: Schema.Types.ObjectId;
@@ -27,6 +37,7 @@ export interface IBid extends Document {
   message: string;
   status: string;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export const productSchema: Schema<IProduct> = new Schema({
@@ -56,6 +67,15 @@ export const productSchema: Schema<IProduct> = new Schema({
   isApproved: { type: Boolean, default: false },
 });
 
+export const exchangeItemSchema: Schema<IExchangeItem> = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: "User", reqiured: true },
+  productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  images: [{ type: String, required: true }],
+  amount: { type: Number, reqiured: true },
+});
+
 export const bidSchema: Schema<IBid> = new Schema({
   productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
   bidderId: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -71,3 +91,7 @@ export const bidSchema: Schema<IBid> = new Schema({
 
 export const ProductModel: Model<IProduct> = model("Product", productSchema);
 export const BidModel: Model<IBid> = model("Bid", bidSchema);
+export const ExchangeModel: Model<IExchangeItem> = model(
+  "Exchange",
+  exchangeItemSchema,
+);

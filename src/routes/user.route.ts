@@ -19,6 +19,7 @@ userRouter.post("/users/register", createUser);
 userRouter.post("/users/login", loginUser);
 userRouter.post("/users/:productId/wishlist", addToWishlist);
 userRouter.delete("/users/:productId/wishlist", removeFromWishlist);
+// userRouter.post("/users/loan-request/:userId")
 
 userRouter.use("/admin/*", bearerAuth({ verifyToken: adminMiddleware }));
 userRouter.get("/admin/users", getAllUsers);

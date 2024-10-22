@@ -5,6 +5,8 @@ import { pay, verifyPayment } from "../controllers/payment.controller.ts";
 
 const paymentRouter = new Hono();
 
+paymentRouter.use("/payment/*", bearerAuth({ verifyToken: userMiddleware }));
+
 paymentRouter.post("/payment/pay", pay);
 paymentRouter.post("/payment/verify/:ref", verifyPayment);
 

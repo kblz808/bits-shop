@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 import { IUser, UserModel } from "../models/user.model.ts";
 import {
   compareHash,
@@ -30,7 +30,11 @@ export const createUser = async (c: Context) => {
 
     await user.save();
 
-    const token = generateToken(user._id!.toString());
+    let token;
+    if (user.is_admin) {
+      token = await generateToken(user._id!.toString(), true);
+    }
+    token = await generateToken(user._id!.toString(), true);
 
     const userjson = {
       id: user._id,
@@ -64,7 +68,11 @@ export const loginUser = async (c: Context) => {
       return c.json({ error: "invalid credentials" }, 401);
     }
 
-    const token = generateToken(user._id!.toString());
+    let token;
+    if (user.is_admin) {
+      token = await generateToken(user._id!.toString(), true);
+    }
+    token = await generateToken(user._id!.toString(), true);
 
     const userjson = {
       id: user._id,
@@ -140,5 +148,66 @@ export const removeFromWishlist = async (c: Context) => {
     return c.json({ message: "Added product to wishlist" }, 201);
   } catch (error) {
     return c.json({ error: "An unknown error occurred" }, 500);
+  }
+};
+
+export const getAllUsers = async (c: Context) => {
+  try {
+    const users = await UserModel.find();
+    return c.json(users, 200);
+  } catch (_) {
+    return c.json({ error: "Failed to get users" }, 500);
+  }
+};
+
+export const getUser = async (c: Context) => {
+  try {
+    const userid = c.req.param("userId");
+
+    const user = await UserModel.findById(userid);
+    if (!user) {
+      return c.json({ message: "user not found" }, 404);
+    }
+
+    return c.json(user, 200);
+  } catch (_) {
+    return c.json({ error: "failed to get user" }, 500);
+  }
+};
+
+export const updateUser = async (c: Context) => {
+  try {
+    const id = c.req.param("userId");
+
+    const updatedData = await c.req.json() as IUser;
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      id,
+      updatedData,
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return c.json({ error: "User not found" }, 404);
+    }
+
+    return c.json(updatedUser, 200);
+  } catch (_) {
+    return c.json({ error: "Failed to update user" }, 500);
+  }
+};
+
+export const deleteUser = async (c: Context) => {
+  try {
+    const id = c.req.param("userId");
+
+    const deletedUser = await UserModel.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return c.json({ error: "Product not found" }, 404);
+    }
+
+    return c.json({ message: "User deleted successfully" }, 200);
+  } catch (_) {
+    return c.json({ error: "Failed to delete user" }, 500);
   }
 };

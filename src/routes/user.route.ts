@@ -2,18 +2,28 @@ import { Hono } from "hono";
 import {
   addToWishlist,
   createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
   loginUser,
   removeFromWishlist,
+  updateUser,
 } from "../controllers/user.controller.ts";
+
 import { bearerAuth } from "hono/bearer-auth";
-import { tokenMiddleware } from "../middlewares/auth.middleware.ts";
+import { adminMiddleware } from "../middlewares/auth.middleware.ts";
 
-const userRoute = new Hono();
-userRoute.post("/users/register", createUser);
-userRoute.post("/users/login", loginUser);
-userRoute.use("/admin/*", bearerAuth({ verifyToken: tokenMiddleware }));
+const userRouter = new Hono();
 
-userRoute.post("/users/:productId/wishlist", addToWishlist);
-userRoute.delete("/users/:productId/wishlist", removeFromWishlist);
+userRouter.post("/users/register", createUser);
+userRouter.post("/users/login", loginUser);
+userRouter.post("/users/:productId/wishlist", addToWishlist);
+userRouter.delete("/users/:productId/wishlist", removeFromWishlist);
 
-export default userRoute;
+userRouter.use("/admin/*", bearerAuth({ verifyToken: adminMiddleware }));
+userRouter.get("/admin/users", getAllUsers);
+userRouter.get("/admin/users/:userId", getUser);
+userRouter.put("/admin/users/:userId", updateUser);
+userRouter.delete("/admin/users/:userId", deleteUser);
+
+export default userRouter;

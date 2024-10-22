@@ -8,17 +8,17 @@ import {
   updateProduct,
 } from "../controllers/product.controller.ts";
 import { bearerAuth } from "hono/bearer-auth";
-import { tokenMiddleware } from "../middlewares/auth.middleware.ts";
+import { userMiddleware } from "../middlewares/auth.middleware.ts";
 
-const productRoute = new Hono();
+const productRouter = new Hono();
 
-productRoute.use("/products/*", bearerAuth({ verifyToken: tokenMiddleware }));
+productRouter.use("/products/*", bearerAuth({ verifyToken: userMiddleware }));
 
-productRoute.post("/products", createProduct);
-productRoute.put("/products/:productId", updateProduct);
-productRoute.delete("/products/:productId", deleteProduct);
-productRoute.get("/products", getAllProducts);
-productRoute.get("/products/:productId", getProduct);
-productRoute.get("/products/:productId/bids", getBidRequests);
+productRouter.post("/products", createProduct);
+productRouter.put("/products/:productId", updateProduct);
+productRouter.delete("/products/:productId", deleteProduct);
+productRouter.get("/products", getAllProducts);
+productRouter.get("/products/:productId", getProduct);
+productRouter.get("/products/:productId/bids", getBidRequests);
 
-export default productRoute;
+export default productRouter;

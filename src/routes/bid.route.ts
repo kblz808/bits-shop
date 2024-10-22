@@ -6,15 +6,15 @@ import {
   rejectBid,
 } from "../controllers/bid.controller.ts";
 import { bearerAuth } from "hono/bearer-auth";
-import { tokenMiddleware } from "../middlewares/auth.middleware.ts";
+import { userMiddleware } from "../middlewares/auth.middleware.ts";
 
-const bidRoute = new Hono();
+const bidRouter = new Hono();
 
-bidRoute.use("/bids/*", bearerAuth({ verifyToken: tokenMiddleware }));
+bidRouter.use("/bids/*", bearerAuth({ verifyToken: userMiddleware }));
 
-bidRoute.post("/bids", createBid);
-bidRoute.get("/bids/:bidId", getBid);
-bidRoute.put("/bids/:bidId/reject", rejectBid);
-bidRoute.put("/bids/:bidId/accept", acceptBid);
+bidRouter.post("/bids", createBid);
+bidRouter.get("/bids/:bidId", getBid);
+bidRouter.put("/bids/:bidId/reject", rejectBid);
+bidRouter.put("/bids/:bidId/accept", acceptBid);
 
-export default bidRoute;
+export default bidRouter;

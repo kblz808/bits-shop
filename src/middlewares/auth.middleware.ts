@@ -1,13 +1,23 @@
-import { Context } from "hono";
-import { createMiddleware } from "hono/factory";
+import type { Context } from "hono";
+// import { createMiddleware } from "hono/factory";
 import { verifyToken } from "../utils/jwt.utils.ts";
 
-export const tokenMiddleware = async (token: string, c: Context) => {
-  const userId = await verifyToken(token);
-  if (userId) {
-    c.set("userId", userId);
+export const adminMiddleware = async (token: string, c: Context) => {
+  try {
+    const userId = await verifyToken(token, true);
+    c.set("userId", userId.sub);
     return true;
+  } catch (_) {
+    return false;
   }
+};
 
-  return false;
+export const userMiddleware = async (token: string, c: Context) => {
+  try {
+    const userId = await verifyToken(token, false);
+    c.set("userId", userId.sub);
+    return true;
+  } catch (_) {
+    return false;
+  }
 };

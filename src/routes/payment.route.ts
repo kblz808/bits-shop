@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
-import { tokenMiddleware } from "../middlewares/auth.middleware.ts";
+import { userMiddleware } from "../middlewares/auth.middleware.ts";
 import { pay, verifyPayment } from "../controllers/payment.controller.ts";
 
-const paymentRoute = new Hono();
+const paymentRouter = new Hono();
 
-paymentRoute.post("/payment/pay", pay);
-paymentRoute.post("/payment/verify/:ref", verifyPayment);
+paymentRouter.post("/payment/pay", pay);
+paymentRouter.post("/payment/verify/:ref", verifyPayment);
 
-export default paymentRoute;
+export default paymentRouter;

@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 import { BidModel, IProduct, ProductModel } from "../models/product.model.ts";
 // import {Readable} from 'stream'
 

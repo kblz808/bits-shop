@@ -14,17 +14,17 @@ export interface IMessage extends Document {
 }
 
 const chatSchema: Schema<IChat> = new Schema({
-  participants: [{ type: Schema.Types.ObjectId, ref: "User", required: true}],
-  messages: [{type: Schema.Types.ObjectId, ref: "Message", default: []}],
+  participants: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message", default: [] }],
 });
 
 const messageSchema: Schema<IMessage> = new Schema({
-  chatId: {type: Schema.Types.ObjectId, ref: "Chat", required: true},
-  text: {type: String, required: true},
-  sender: {type: Schema.Types.ObjectId, ref: "User", required: true},
-  receiver: {type: Schema.Types.ObjectId, ref: "User", required: true},
-  timestamp: {type: Date, default: Date.now},
-})
+  chatId: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
+  text: { type: String, required: true },
+  sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  receiver: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  timestamp: { type: Date, default: Date.now },
+});
 
 export const ChatModel: Model<IChat> = model("Chat", chatSchema);
 export const MessageModel: Model<IMessage> = model("Message", messageSchema);

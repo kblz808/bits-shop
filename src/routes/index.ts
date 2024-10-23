@@ -6,6 +6,8 @@ import productRouter from "./product.route.ts";
 import userRouter from "./user.route.ts";
 import bidRouter from "./bid.route.ts";
 import paymentRouter from "./payment.route.ts";
+import messageRouter from "./message.route.ts";
+
 
 import doc from "../swagger.json" with { type: "json" };
 
@@ -15,4 +17,5 @@ export function InitRoutes(app: Hono) {
   app.route("/api", productRouter);
   app.route("/api", bidRouter);
   app.route("/api", paymentRouter);
+  app.route("/api", messageRouter);
 }

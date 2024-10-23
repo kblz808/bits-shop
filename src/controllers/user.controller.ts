@@ -34,7 +34,7 @@ export const createUser = async (c: Context) => {
     if (user.is_admin) {
       token = await generateToken(user._id!.toString(), true);
     }
-    token = await generateToken(user._id!.toString(), true);
+    token = await generateToken(user._id!.toString(), false);
 
     const userjson = {
       id: user._id,
@@ -72,7 +72,7 @@ export const loginUser = async (c: Context) => {
     if (user.is_admin) {
       token = await generateToken(user._id!.toString(), true);
     }
-    token = await generateToken(user._id!.toString(), true);
+    token = await generateToken(user._id!.toString(), false);
 
     const userjson = {
       id: user._id,
@@ -203,7 +203,7 @@ export const deleteUser = async (c: Context) => {
     const deletedUser = await UserModel.findByIdAndDelete(id);
 
     if (!deletedUser) {
-      return c.json({ error: "Product not found" }, 404);
+      return c.json({ error: "User not found" }, 404);
     }
 
     return c.json({ message: "User deleted successfully" }, 200);

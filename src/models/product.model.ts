@@ -17,6 +17,7 @@ export interface IProduct extends Document {
   createdAt: Date;
   updatedAt: Date;
   bids: Schema.Types.ObjectId[];
+  chatId: Schema.Types.ObjectId;
 }
 
 export interface IExchangeItem extends Document {
@@ -65,6 +66,7 @@ export const productSchema: Schema<IProduct> = new Schema({
     default: "pending",
   },
   isApproved: { type: Boolean, default: false },
+  chatId: { type: Schema.Types.ObjectId },
 });
 
 export const exchangeItemSchema: Schema<IExchangeItem> = new Schema({

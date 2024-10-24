@@ -5,6 +5,9 @@ import { BidModel, IProduct, ProductModel } from "../models/product.model.ts";
 export const createProduct = async (c: Context) => {
   try {
     const productData = await c.req.json();
+
+    // imageBucket(productData);
+
     const product = new ProductModel(productData);
     await product.save();
     return c.json(product, 201);

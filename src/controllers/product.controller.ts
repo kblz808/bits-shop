@@ -1,5 +1,13 @@
 import type { Context } from "hono";
-import { BidModel, IProduct, ProductModel } from "../models/product.model.ts";
+import mongoose, { Schema } from "npm:mongoose";
+
+import {
+  BidModel,
+  type IExchangeItem,
+  IProduct,
+  ProductModel,
+} from "../models/product.model.ts";
+import { ExchangeModel } from "../models/product.model.ts";
 // import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {
@@ -120,5 +128,44 @@ export const getBidRequests = async (c: Context) => {
     return c.json(bids);
   } catch (error) {
     return c.json({ error: "An unknown erro  occurred" }, 500);
+  }
+};
+
+export const createExchangeRequest = async (c: Context) => {
+  try {
+    const productId = c.req.param("productId");
+
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return c.json({ error: "Product not found" }, 404);
+    }
+
+    let exchangeData = await c.req.json();
+    exchangeData.productId = product._id;
+
+    const exchange = new ExchangeModel(exchangeData);
+    exchange.save();
+
+    return c.json({ message: "Exchange request successfully created" }, 200);
+  } catch (error) {
+    console.log(error);
+    return c.json({ error: "Failed to create exchange request" }, 500);
+  }
+};
+
+export const getExchangeRequests = async (c: Context) => {
+  try {
+    const productId = c.req.param("productId");
+
+    const product = ProductModel.findById(productId);
+    if (!product) {
+      return c.json({ error: "Product not found" }, 404);
+    }
+
+    const exchanges = await ExchangeModel.find({ productId });
+
+    return c.json(exchanges);
+  } catch (error) {
+    return c.json({ message: "Failed to get exchange requests" }, 500);
   }
 };

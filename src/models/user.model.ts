@@ -9,6 +9,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   is_admin: boolean;
+  role: "buyer" | "admin" | "seller";
   account_balance: number;
   is_blocked: boolean;
   purchased_products: [Schema.Types.ObjectId];
@@ -34,6 +35,11 @@ export const userSchema: Schema<IUser> = new Schema(
     is_admin: {
       type: Boolean,
       default: false,
+    },
+    role: {
+      type: String,
+      enum: ["buyer", "seller", "admin"],
+      default: "buyer",
     },
     account_balance: { type: Number, default: 0 },
     is_blocked: { type: Boolean, default: false },

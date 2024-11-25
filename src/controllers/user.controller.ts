@@ -44,6 +44,7 @@ export const createUser = async (c: Context) => {
       phone_number: user.phone_number,
       school_id: user.school_id,
       email: user.email,
+      role: user.role,
     };
 
     return c.json({ userjson, token }, 201);

@@ -1,20 +1,12 @@
 import type { Context } from "hono";
-import mongoose, { Schema } from "npm:mongoose";
 
-import {
-  BidModel,
-  type IExchangeItem,
-  IProduct,
-  ProductModel,
-} from "../models/product.model.ts";
+import { BidModel, IProduct, ProductModel } from "../models/product.model.ts";
 import { ExchangeModel } from "../models/product.model.ts";
 // import {Readable} from 'stream'
 
 export const createProduct = async (c: Context) => {
   try {
     const productData = await c.req.json();
-
-    // imageBucket(productData);
 
     const product = new ProductModel(productData);
     await product.save();

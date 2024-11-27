@@ -1,5 +1,6 @@
 {
   "imports": {
+    "better-auth": "npm:better-auth@^1.0.5",
     "hono": "jsr:@hono/hono@^4.6.5"
   },
   "tasks": {

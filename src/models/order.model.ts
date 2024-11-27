@@ -13,7 +13,7 @@ export const orderSchema: Schema<IOrder> = new Schema({
   products: [{ type: Schema.Types.ObjectId, ref: "Product", required: true }],
   status: {
     type: String,
-    enum: ["pending", "denies", "finished"],
+    enum: ["pending", "processing", "paid", "denied", "paid"],
     default: "pending",
   },
   createdAt: { type: Date, default: Date.now },

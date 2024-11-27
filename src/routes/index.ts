@@ -7,6 +7,7 @@ import userRouter from "./user.route.ts";
 import bidRouter from "./bid.route.ts";
 import paymentRouter from "./payment.route.ts";
 import messageRouter from "./message.route.ts";
+import orderRouter from "./order.route.ts";
 
 import doc from "../swagger.json" with { type: "json" };
 
@@ -17,6 +18,7 @@ export function InitRoutes(app: Hono) {
   app.route("/api", bidRouter);
   app.route("/api", paymentRouter);
   app.route("/api", messageRouter);
+  app.route("/api", orderRouter);
 
   // app.post("/upload", async (c) => {
   //   const body = await c.req.blob();

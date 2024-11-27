@@ -53,7 +53,6 @@ export const productSchema: Schema<IProduct> = new Schema({
       type: String,
       required: true,
     },
-    // description: {type: String, required: true},
     subCategories: [{ type: String, required: true }],
   }],
   tag: { type: String, required: false },
@@ -63,7 +62,7 @@ export const productSchema: Schema<IProduct> = new Schema({
   status: {
     type: String,
     enum: ["available", "sold", "lent", "pending"],
-    default: "pending",
+    default: "available",
   },
   isApproved: { type: Boolean, default: false },
   chatId: { type: Schema.Types.ObjectId },

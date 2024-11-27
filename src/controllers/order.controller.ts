@@ -1,5 +1,6 @@
 import type { Context } from "hono";
 import { OrderModel } from "../models/order.model.ts";
+import { ProductModel } from "../models/product.model.ts"; // added import statement
 
 export const createOrder = async (c: Context) => {
   try {
@@ -15,11 +16,29 @@ export const createOrder = async (c: Context) => {
   }
 };
 
+export const getOrders = async (c: Context) => {
+  try {
+    const orders = await OrderModel.find().populate({
+      path: 'products.product_id',
+      model: 'Product'
+    });
+
+    return c.json(orders, 200);
+  } catch (error) {
+    console.log(error);
+    return c.json({ error: "Failed to get orders" }, 500);
+  }
+};
+
+
 export const getOrder = async (c: Context) => {
   try {
     const orderId = c.req.param("orderId");
 
-    const order = await OrderModel.findById(orderId).populate('products');
+    const order = await OrderModel.findById(orderId).populate({
+      path: 'products.product_id',
+      model: 'Product'
+    });
 
     if (!order) {
       return c.json({ error: "Order not found" }, 404);

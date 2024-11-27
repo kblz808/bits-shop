@@ -83,6 +83,8 @@ export const loginUser = async (c: Context) => {
       phone_number: user.phone_number,
       school_id: user.school_id,
       email: user.email,
+      role: user.role,
+      is_admin: user.is_admin,
     };
 
     return c.json({ userjson, token }, 201);
